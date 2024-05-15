@@ -1,0 +1,115 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Notes Backend using SAM
+
+Parameters:
+  Stage:
+    Type: String
+    Default: dev
+
+Globals:
+  Function:
+    Runtime: python3.10
+    Environment:
+      Variables:
+        NOTES_TABLE: !Ref NotesTable
+    MemorySize: 128
+    Timeout: 5
+  Api:
+    Cors:
+      AllowMethods: "'POST, GET, PATCH, DELETE'"
+      AllowHeaders: "'Accept, Content-Type, Content-Length, Authorization, X-Amz-Date,X-Api-Key,X-Amz-Security-Token, X-Amz-User-Agent, app_user_id'"
+      AllowOrigin: "'*'"
+
+Resources:
+  NotesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub notes-be-sam-${Stage}
+      AttributeDefinitions:
+        - AttributeName: user_id
+          AttributeType: S
+        - AttributeName: timestamp
+          AttributeType: N
+        - AttributeName: note_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: user_id
+          KeyType: HASH
+        - AttributeName: timestamp
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      GlobalSecondaryIndexes:
+        - IndexName: note_id-index
+          KeySchema:
+            - AttributeName: note_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1      
+
+  GetNote:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: api/GetNote.getNote_handler
+      Policies: AmazonDynamoDBReadOnlyAccess
+      Events:
+        GetNote:
+          Type: Api
+          Properties: 
+            Path: /note/{note_id}
+            Method: get
+
+  GetNotes:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: api/GetNotes.getNotes_handler
+      Policies: AmazonDynamoDBReadOnlyAccess
+      Events:
+        GetNotes:
+          Type: Api
+          Properties: 
+            Path: /notes
+            Method: get
+
+  UpdateNote:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: api/UpdateNote.updateNote_handler
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UpdateNote:
+          Type: Api
+          Properties: 
+            Path: /note
+            Method: patch
+
+  AddNote:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: api/AddNote.addNote_handler
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        CreateNote:
+          Type: Api
+          Properties: 
+            Path: /note
+            Method: post
+
+  DeleteNote:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: api/DeleteNote.deleteNote_handler
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        DeleteNote:
+          Type: Api
+          Properties: 
+            Path: /note
+            Method: delete
+
+

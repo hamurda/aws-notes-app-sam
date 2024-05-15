@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+  install:
+      runtime-versions:
+        python: 3.10
+  pre_build:
+    commands:
+      - sam --version
+  build:
+    commands: 
+      - echo Deploying with the SAM
+      - sam deploy --template-file template.yaml --stack-name note-app --parameter-overrides Stage=$ENV_NAME --capabilities "CAPABILITY_IAM"
+  post_build:
+    commands:
+      - echo Deployment completed
