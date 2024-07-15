@@ -25,7 +25,7 @@ This project demonstrates the basics of AWS serverless architecture by building 
 - NOTES_TABLE has partition key 'user_id' and sort key 'timestamp'
 - NOTES_TABLE has also a GSI with the partition key 'note_id'
 
-The project is created using AWS SAM to define the infrastructure with a simple template. It's uploaded to AWS CodeCommit repository and integrated with the cI/CD pipeline. 
+The project is created using AWS SAM to define the infrastructure with a simple template. It's uploaded to AWS CodeCommit repository and integrated with the CI/CD pipeline. 
 
 ### Next Steps
 - Adding Amazon Cognito
