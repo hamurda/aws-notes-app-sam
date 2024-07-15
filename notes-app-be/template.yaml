@@ -55,7 +55,7 @@ Resources:
   GetNote:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: api/GetNote.getNote_handler
+      Handler: api/GetNote.get_note_handler
       Policies: AmazonDynamoDBReadOnlyAccess
       Events:
         GetNote:
@@ -67,7 +67,7 @@ Resources:
   GetNotes:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: api/GetNotes.getNotes_handler
+      Handler: api/GetNotes.get_notes_handler
       Policies: AmazonDynamoDBReadOnlyAccess
       Events:
         GetNotes:
@@ -79,7 +79,7 @@ Resources:
   UpdateNote:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: api/UpdateNote.updateNote_handler
+      Handler: api/UpdateNote.update_note_handler
       Policies: AmazonDynamoDBFullAccess
       Events:
         UpdateNote:
@@ -91,7 +91,7 @@ Resources:
   AddNote:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: api/AddNote.addNote_handler
+      Handler: api/AddNote.add_note_handler
       Policies: AmazonDynamoDBFullAccess
       Events:
         CreateNote:
@@ -103,7 +103,7 @@ Resources:
   DeleteNote:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: api/DeleteNote.deleteNote_handler
+      Handler: api/DeleteNote.delete_note_handler
       Policies: AmazonDynamoDBFullAccess
       Events:
         DeleteNote:

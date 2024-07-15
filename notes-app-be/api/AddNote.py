@@ -4,24 +4,24 @@ import boto3
 import os
 import json
 from botocore import exceptions
-from .fx import generateNoteID, getCurrentTime,getUserID, getHeaders
+from .fx import generate_note_id, get_current_time,get_user_id, get_headers
 
 
 lambda_client = boto3.client("lambda")
 dynamodb_client = boto3.client("dynamodb")
 
 tableName = os.environ.get("NOTES_TABLE")
-headers = getHeaders()
+headers = get_headers()
 
 
-def addNote_handler(event, context):
+def add_note_handler(event, context):
     try:
         note_content = json.loads(event["body"])["Item"]["note"]
 
         note_client = {
-            "user_id": { "S" : getUserID(event)},
-            "timestamp": { "N" : str(getCurrentTime())},
-            "note_id": { "S" : generateNoteID()},
+            "user_id": { "S" : get_user_id(event)},
+            "timestamp": { "N" : str(get_current_time())},
+            "note_id": { "S" : generate_note_id()},
             "note": { "S" : note_content},
         }
     
