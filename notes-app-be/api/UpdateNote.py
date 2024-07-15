@@ -4,15 +4,15 @@ import boto3
 import os
 import json
 from botocore import exceptions
-from .fx import getUserID, getHeaders, getCurrentTime
+from .fx import get_user_id, get_headers, get_current_time
 
 
 dynamodb_client = boto3.client("dynamodb")
 tableName = os.environ.get("NOTES_TABLE")
-headers = getHeaders()
+headers = get_headers()
 
 
-def updateNote_handler(event, context):
+def update_note_handler(event, context):
     try:
         upd_note = json.loads(event["body"])["Item"]
     
@@ -23,7 +23,7 @@ def updateNote_handler(event, context):
                 "timestamp": {"N": upd_note["timestamp"]}
             },
             ExpressionAttributeValues = {
-                ':uid': {"S": str(getUserID(event))},
+                ':uid': {"S": str(get_user_id(event))},
                 ':new_note' : {"S": upd_note["note"]},
                 ':nid' : {"S": upd_note["note_id"]},
             },

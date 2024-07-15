@@ -4,16 +4,16 @@ import boto3
 import os
 import simplejson as json
 from botocore import exceptions
-from .fx import getHeaders, getUserID
+from .fx import get_headers, get_user_id
 
 dynamodb_client = boto3.client("dynamodb")
 paginator = dynamodb_client.get_paginator('query')
 
 tableName = os.environ.get("NOTES_TABLE")
-headers = getHeaders()
+headers = get_headers()
 
-def getNotes_handler(event, context):
-    user_id = getUserID(event)
+def get_notes_handler(event, context):
+    user_id = get_user_id(event)
     response = {
                 "headers" : headers,
             }

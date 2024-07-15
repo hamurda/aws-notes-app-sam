@@ -4,15 +4,15 @@ import boto3
 import os
 import json
 from botocore import exceptions
-from .fx import getHeaders
+from .fx import get_headers
 
 
 dynamodb_client = boto3.client("dynamodb")
 tableName = os.environ.get("NOTES_TABLE")
-headers = getHeaders()
+headers = get_headers()
 
 
-def deleteNote_handler(event, context):
+def delete_note_handler(event, context):
     try:
         org_note = json.loads(event["body"])["Item"]
     
